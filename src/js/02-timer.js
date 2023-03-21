@@ -1,7 +1,5 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-import Notiflix from 'notiflix';
-
 
 const input = document.querySelector('input');
 const btnStart = document.querySelector('button[data-start]');
@@ -33,34 +31,6 @@ const options = {
   },
 };
 
-flatpickr(input, options);
-
-btnStart.addEventListener('click', () => {
-  btnStart.setAttribute('disabled', '');
-  countingTime();
-  timer = setInterval(countingTime, 1000);
-});
-
-function addLeadingZero(value) {
-  return value.toString().padStart(2, '0');
-}
-
-function countingTime() {
-  date = new Date();
-  if (selectedTime < date.getTime()) {
-    clearInterval(timer);
-    return;
-  } else {
-    const { days, hours, minutes, seconds } = date;
-
-    timerDays.textContent = addLeadingZero(days.toString());
-    timerHours.textContent = addLeadingZero(hours.toString());
-    timerMinutes.textContent = addLeadingZero(minutes.toString());
-    timerSeconds.textContent = addLeadingZero(seconds.toString());
-  }
-}
-
-
 
 function convertMs(ms) {
 // Number of milliseconds per unit of time
@@ -80,7 +50,3 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-
-console.log(convertMs(2000));// {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000));// {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000));// {days: 0, hours: 6 minutes: 42, seconds: 20}
