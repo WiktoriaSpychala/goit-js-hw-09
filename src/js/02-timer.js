@@ -49,23 +49,22 @@ function convertMs(ms) {
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
-};
-
+}
 
 const addLeadingZero = value => {
   return value.toString().padStart(2, '0');
 };
 
 function countingTime() {
+  const date = new Date();
   const timerObj = convertMs(selectedTime - date);
   timerDays.innerHTML = addLeadingZero(timerObj.days);
   timerHours.innerHTML = addLeadingZero(timerObj.hours);
   timerMinutes.innerHTML = addLeadingZero(timerObj.minutes);
   timerSeconds.innerHTML = addLeadingZero(timerObj.seconds);
-};
+}
 btnStart.addEventListener('click', () => {
   btnStart.setAttribute('disabled', '');
-  timer = setInterval(countingTime(), 1000);
-  
+  timer = setInterval(countingTime, 1000);
 });
 
