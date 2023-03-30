@@ -22,7 +22,6 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
     if (selectedDates[0] <= date.getTime()) {
-      btnStart.setAttribute('disabled', true);
       window.alert('Please choose a date in the future');
     } else {
       btnStart.removeAttribute('disabled');
@@ -59,12 +58,19 @@ const addLeadingZero = value => {
 
 function countingTime() {
   let date = new Date();
-  const timerObj = convertMs(selectedTime - date);
-  timerDays.innerHTML = addLeadingZero(timerObj.days);
-  timerHours.innerHTML = addLeadingZero(timerObj.hours);
-  timerMinutes.innerHTML = addLeadingZero(timerObj.minutes);
-  timerSeconds.innerHTML = addLeadingZero(timerObj.seconds);
+  if (selectedTime < date.getTime()) {
+    clearInterval(timer);
+    return;
+  }
+  else {
+    const timerObj = convertMs(selectedTime - date.getTime());
+    timerDays.innerHTML = addLeadingZero(timerObj.days);
+    timerHours.innerHTML = addLeadingZero(timerObj.hours);
+    timerMinutes.innerHTML = addLeadingZero(timerObj.minutes);
+    timerSeconds.innerHTML = addLeadingZero(timerObj.seconds);
+  }
 }
+
 btnStart.addEventListener('click', () => {
   btnStart.setAttribute('disabled', true);
   timer = setInterval(countingTime, 1000);

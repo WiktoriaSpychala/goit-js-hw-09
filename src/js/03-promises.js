@@ -1,30 +1,42 @@
 import Notiflix from 'notiflix';
 
-const form = document.querySelector('.form');
-const delays = document.querySelector('input[name="delay"]');
-const steps = document.querySelector('input[name="step"]');
-const amount = document.querySelector('input[name="amount"]');
-
+const form = document.querySelector('form');
 
 function createPromise(position, delay) {
+  const shouldResolve = Math.random() > 0.3;
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const shouldResolve = Math.random() > 0.3;
       if (shouldResolve) {
-        resolve(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        // Fulfill
+        resolve({ position, delay });
       } else {
-        reject(`❌ Rejected promise ${position} in ${delay}ms`);
+        // Reject
+        reject({ position, delay });
       }
-    }, delay + steps.value * position)
-  })
+    }, delay);
+  });
 }
 
-function handleSubmit(event) {
+const notifications = (position, delay) => {
+  createPromise(position, delay)
+    .then(({ position, delay }) => {
+      Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+    })
+    .catch(({ position, delay }) => {
+      Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+    });
+};
+
+const handleSubmit = event => {
   event.preventDefault();
-  for (let i = 0; i < Number(amount.value); i++) {
-    createPromise(i, Number(delays.value), Number(steps.value))
-      .then(fulfill => { Notiflix.Notify.success(fulfill) })
-      .catch(reject => { Notiflix.Notify.failure(reject) })
+  const delayValue = Number(form.elements.delay.value);
+  const stepValue = Number(form.elements.step.value);
+  const amountValue = Number(form.elements.amount.value)
+  for (let i = 0; i < amountValue; i++) {
+    promiseNumber = i + 1;
+    delayPromise = delayValue + stepValue * i;
+    notifications(promiseNumber, delayPromise);
   }
-}
+};
+
 form.addEventListener('submit', handleSubmit);
