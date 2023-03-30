@@ -8,20 +8,22 @@ const timerHours = document.querySelector('.value[data-hours]');
 const timerMinutes = document.querySelector('.value[data-minutes]');
 const timerSeconds = document.querySelector('.value[data-seconds]');
 let timer = null;
-let date = new Date().getTime();
+let date = new Date();
 let selectedTime;
+
+btnStart.setAttribute('disabled', true);
 
 
 const options = {
   enableTime: true,
   time_24hr: true,
-  defaultDate: date,
+  defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
     console.log(selectedDates[0]);
-    if (selectedDates[0] <= date) {
+    if (selectedDates[0] <= date.getTime()) {
+      btnStart.setAttribute('disabled', true);
       window.alert('Please choose a date in the future');
-      btnStart.setAttribute('disabled', '');
     } else {
       btnStart.removeAttribute('disabled');
       selectedTime = selectedDates[0];
@@ -56,7 +58,7 @@ const addLeadingZero = value => {
 };
 
 function countingTime() {
-  const date = new Date();
+  let date = new Date();
   const timerObj = convertMs(selectedTime - date);
   timerDays.innerHTML = addLeadingZero(timerObj.days);
   timerHours.innerHTML = addLeadingZero(timerObj.hours);
@@ -64,7 +66,7 @@ function countingTime() {
   timerSeconds.innerHTML = addLeadingZero(timerObj.seconds);
 }
 btnStart.addEventListener('click', () => {
-  btnStart.setAttribute('disabled', '');
+  btnStart.setAttribute('disabled', true);
   timer = setInterval(countingTime, 1000);
 });
 
