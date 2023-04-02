@@ -33,8 +33,8 @@ const handleSubmit = event => {
   const stepValue = Number(form.elements.step.value);
   const amountValue = Number(form.elements.amount.value)
   for (let i = 0; i < amountValue; i++) {
-    promiseNumber = i + 1;
-    delayPromise = delayValue + stepValue * i;
+    const promiseNumber = i + 1;
+    const delayPromise = delayValue + stepValue * i;
     notifications(promiseNumber, delayPromise);
   }
 };
